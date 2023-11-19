@@ -2,14 +2,20 @@ package com.keildraco.simplemachines;
 
 import com.keildraco.simplemachines.blocks.BlockAutomaticFurnace;
 import com.keildraco.simplemachines.entities.AutomaticFurnaceEntity;
+import com.keildraco.simplemachines.util.AutomaticFurnaceMenu;
+import com.keildraco.simplemachines.util.AutomaticFurnaceRecipe;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -44,10 +50,21 @@ public class SimpleMachines
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
+    private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
+    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MODID);
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, MODID);
+
     public static final RegistryObject<Block> AUTOMATIC_FURNACE_BLOCK = BLOCKS.register("automagic_furnace", () -> new BlockAutomaticFurnace(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)));
     public static final RegistryObject<BlockEntityType<AutomaticFurnaceEntity>> FURNACE_ENTITY = BLOCK_ENTITIES.register( "automatic_furnace", () -> BlockEntityType.Builder.of(AutomaticFurnaceEntity::new, AUTOMATIC_FURNACE_BLOCK.get()).build(null));
-
-    // Creates a new BlockItem with the id "examplemod:example_block", combining the namespace and path
+    public static final RegistryObject<MenuType<AutomaticFurnaceMenu>> AUTOMATIC_FURNACE_MENU = MENU_TYPES.register( "automatic_furnace", () -> new MenuType<>(AutomaticFurnaceMenu::new, FeatureFlags.DEFAULT_FLAGS));
+    public static final RegistryObject<RecipeType<AutomaticFurnaceRecipe>> FURNACE_RECIPES = RECIPE_TYPES.register( "furnace", () -> new RecipeType<>() {
+        @Override
+        public String toString() {
+            return MODID+":furnace";
+        }
+    });
+    public static final RegistryObject<RecipeSerializer<AutomaticFurnaceRecipe>> FURNACE_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("furnace", () -> new AutomaticFurnaceRecipe.Serializer());
+        // Creates a new BlockItem with the id "examplemod:example_block", combining the namespace and path
     //public static final RegistryObject<Item> EXAMPLE_BLOCK_ITEM = ITEMS.register("example_block", () -> new BlockItem(EXAMPLE_BLOCK.get(), new Item.Properties()));
 
     // Creates a new food item with the id "examplemod:example_id", nutrition 1 and saturation 2

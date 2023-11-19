@@ -5,17 +5,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
-import org.checkerframework.checker.units.qual.C;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 // large chunks cribbed from the example provided by the mod EnderRift by David "Gigaherz" Quintana
-public class FurnaceInventory implements IItemHandler {
+public class FurnaceInventory implements IItemHandlerModifiable {
     final List<InventorySlot> slots = Lists.newArrayList();
 
-    FurnaceInventory() {
+    public FurnaceInventory() {
 
     }
 
@@ -125,5 +124,10 @@ public class FurnaceInventory implements IItemHandler {
             slot.setCount(count);
             slots.add(slot);
         }
+    }
+
+    @Override
+    public void setStackInSlot(int index, @NotNull ItemStack itemStack) {
+        slots.set(index, new InventorySlot(itemStack));
     }
 }

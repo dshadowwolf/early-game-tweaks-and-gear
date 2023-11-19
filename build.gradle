@@ -11,6 +11,10 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+    maven {
+        url = 'https://maven.blamejared.com'
+        name = 'BlameJared Maven'
+    }
 }
 
 base {
@@ -81,6 +85,9 @@ dependencies {
     // And its provides the option to then use net.minecraft as the group, and one of; client, server or joined as the module name, plus the game version as version.
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
+    // this is for later use at this point...
+    // no real time to dive into using this
+    // compileOnly(fg.deobf('com.blamejared.crafttweaker:CraftTweaker-forge-1.20.1:14.0.23'))
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
